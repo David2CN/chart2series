@@ -1,0 +1,9 @@
+
+jupyterlab
+matplotlib
+numpy
+pillow
+torch
+torchvision
+ultralytics
+
