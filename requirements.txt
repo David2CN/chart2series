@@ -1,9 +1,15 @@
-
+# requirements
 jupyterlab
 matplotlib
 numpy
+pandas
 pillow
-torch
-torchvision
+
+# install torch-cpu using the command below
+# pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+# torch
+# torchvision
+tqdm
+# 
 ultralytics
 
