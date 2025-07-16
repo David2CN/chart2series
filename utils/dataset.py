@@ -1,11 +1,11 @@
 import json
 import shutil
-import matplotlib.pyplot as plt
-import pandas as pd
-from PIL import Image, ImageDraw
 from pathlib import Path
-from tqdm import tqdm
 from random import seed, sample
+
+import matplotlib.pyplot as plt
+from PIL import Image, ImageDraw
+from tqdm import tqdm
 
 
 # classes

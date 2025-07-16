@@ -1,7 +1,9 @@
-import numpy as np
 from io import BytesIO
+
+import numpy as np
+from PIL import Image
 from easyocr import Reader
-from pytesseract import pytesseract
+# from pytesseract import pytesseract
 
 
 def collapse_y_axis_boxes(ticks: list):
