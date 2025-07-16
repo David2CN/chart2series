@@ -1,13 +1,15 @@
 import json
 import shutil
+from pathlib import Path
+from random import sample, seed, shuffle
+from collections import Counter
+
 import torch
 import torchvision.transforms as T
 import pandas as pd
-from pathlib import Path
-from PIL import Image
+import matplotlib.pyplot as plt
+from PIL import Image, ImageDraw
 from tqdm import tqdm
-from random import sample, seed, shuffle
-from collections import Counter
 
 
 def read_txt(txt_path: str) -> list[list[float]]:
@@ -336,3 +338,26 @@ def get_transform():
                   T.ConvertImageDtype(torch.float)]
     return T.Compose(transforms)
 
+
+def draw_bbox(img: Image, boxes: list, color: tuple=(0, 0, 255)) -> Image:
+    width, height = img.size
+    draw = ImageDraw.Draw(img)
+    for bbox in boxes:
+        draw.rectangle(bbox, outline=color)
+    return img
+
+
+def show_boxes(json_file: str, img_file: str=None, ax: plt.Axes=None):
+    if img_file is None:
+        img_file = json_file.replace("annotations", "images").replace(".json", ".jpg")
+
+    img = read_image(img_file)
+    d = parse_json(json_file)
+    draw_img = draw_bbox(img, d["boxes"], color=(255, 0, 0))
+    
+    if not ax:
+        plt.imshow(draw_img)
+        plt.axis("off")
+    else:
+        ax.imshow(draw_img)
+        ax.axis("off")

@@ -1,4 +1,5 @@
 # requirements
+easyocr
 jupyterlab
 matplotlib
 numpy

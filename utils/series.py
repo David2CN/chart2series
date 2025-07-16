@@ -1,9 +1,12 @@
+import math
 from io import BytesIO
 
 import numpy as np
 from PIL import Image
 from easyocr import Reader
-# from pytesseract import pytesseract
+
+from utils.dataset import xywhn2xyxy
+from utils.data import xywh2xyxy, xyxyn2xyxy, ID2LABELS, read_json
 
 
 def collapse_y_axis_boxes(ticks: list):
@@ -79,22 +82,29 @@ def to_polygon(points: list):
     return polygon
 
 
-def words_crop_to_text(crop: list, img: Image, reader: Reader, axis: int=0):
+def words_crop_to_text(crop: list, img: Image, reader: Reader, verbose: bool=False):
     cropped_img = crop_image(crop, img)
     text = reader.readtext(cropped_img)
+    if verbose:
+        print(text)
+        
     if text == []:
         return 'aeiou'
     else:
         return text[0][1]
     
-
-def nums_crop_to_text(crop: list, img: Image, c_num: int=6):
+    
+def nums_crop_to_text(crop: list, img: Image, reader: Reader, verbose: bool=False):
     cropped_img = crop_image(crop, img)
-    text = pytesseract.image_to_string(cropped_img, lang='eng',
-                                       config=f'--psm {c_num} -c tessedit_char_whitelist=01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.')
-    text = text.replace("\f","").strip()
+    text = reader.readtext(cropped_img)
+    if verbose:
+        print(text)
+
+    if text == []:
+        return None
+
     try:
-        text_val = float(text)
+        text_val = float(text[0][1])
     except:
         text_val = None
     return text_val
@@ -125,9 +135,6 @@ def parse_boxes(boxes: list, labels: list):
     res["x_ticks"].sort(key=lambda x: x[0])
     res["y_ticks"].sort(key=lambda x: x[1])
     return res
-
-
-import math
 
 
 def parse_json4series(json_file: str) -> dict:

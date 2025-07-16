@@ -1,16 +1,10 @@
 import torch
-import torchvision
 import torchvision.transforms as T
-from torchvision.utils import draw_bounding_boxes
-from torchvision.transforms.functional import to_pil_image
-from torch.utils.data import DataLoader
 from torchvision.models.detection import FasterRCNN_MobileNet_V3_Large_FPN_Weights, fasterrcnn_mobilenet_v3_large_fpn
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 
 from PIL import Image
-from tqdm import tqdm
-from utils.data import BeneTech, collate_fn, ID2LABELS
-from utils.engine import non_max_suppression, train_one_epoch
+from utils.engine import non_max_suppression
 
 
 class Detector:
